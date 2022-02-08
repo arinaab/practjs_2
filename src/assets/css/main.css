@@ -105,6 +105,9 @@ h4 {
   top: 4rem;
   right: 2rem;
   cursor: pointer;
+  animation: pulse;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
 }
 .header .container {
   padding: 0;
