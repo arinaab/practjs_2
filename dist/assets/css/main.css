@@ -211,6 +211,7 @@ h4 {
 .main {
   background-color: #f7e7e6;
   padding-top: 3rem;
+  height: 791px;
   /* Making it beautiful */
 
 }
@@ -354,6 +355,9 @@ h4 {
   font-size: 1.5rem;
   margin: 7rem 0 3rem 0;
   font-family: 'Circe Regular', sans-serif;
+}
+.main-slider-item {
+  height: 100px;
 }
 .main .button-order {
   padding: 1.5rem 4rem;
