@@ -1,6 +1,7 @@
 const forms = () => {
     const form = document.querySelectorAll('form'),
-          upload = document.querySelectorAll('input[name="upload"]');
+          inputs = document.querySelectorAll('input'), //для очистки инпутов
+          upload = document.querySelectorAll('input[name="upload"]'); //инпуты с выбором файлов
 
     const checkNumInputs = () => {
         const inputs = document.querySelectorAll('input[name="phone"]');
@@ -9,6 +10,11 @@ const forms = () => {
                 input.value = input.value.replace(/\D/, '');
             });
         });
+    };
+
+    const clearInputs = () => {
+        inputs.forEach(input => input.value = '');
+        upload.forEach(item => item.previousElementSibling.textContent = 'Файл не выбран');
     };
 
     checkNumInputs();
@@ -27,9 +33,15 @@ const forms = () => {
         question: 'assets/question.php',
     };
 
-    upload.forEach(item => {
+    upload.forEach(item => { //выбор файлов
         item.addEventListener('input', () => {
-            console.log(item.files[0]);
+            console.log(item.files[0]); //вывод файла
+            let dots; //переменная для троеточия
+            const arr = item.files[0].name.split('.');
+            arr[0].length > 6 ? dots = '...' : dots = '.'; //одна точка для расширения
+            const name = arr[0].substring(0, 6) + dots + arr[1];
+
+            item.previousElementSibling.textContent = name;
         });
     });
 
@@ -48,22 +60,22 @@ const forms = () => {
 
             let statusMessage = document.createElement('div');
             statusMessage.classList.add('status');
-            item.parentNode.append(statusMessage);
+            item.parentNode.append(statusMessage); //вставляем блок в родителя формы, чтобы блок был вместо формы
 
             item.classList.add('animate__animatid', 'animate__fadeOutUp');
             setTimeout( () => {
                 item.style.display = 'none';
             }, 400);
 
-            let statusImg = document.createElement('img'),
-                textMessage = document.createElement('div');
+            let statusImg = document.createElement('img'), //добавляем картинку
+                textMessage = document.createElement('div'); // добавляем оповещение
             statusImg.setAttribute('src', message.spinner);
             statusImg.classList.add('animate__animated', 'animate__fadeInUp');
             textMessage.textContent = message.loading;
             statusMessage.append(statusImg, textMessage);
 
             const formData = new FormData(item);
-            let api;
+            let api; //переменная для формирования пути на сервер
             item.closest('.popup-design') || item.classList.contains('calc_form') ? api = path.designer : api = path.question;
 
             postData(api, formData)
@@ -77,7 +89,7 @@ const forms = () => {
                     textMessage.textContent = message.failure;
                 })
                 .finally( () => {
-                    item.reset();
+                    clearInputs();
                     setTimeout( () => {
                         statusMessage.remove();
                         item.style.display = 'block';

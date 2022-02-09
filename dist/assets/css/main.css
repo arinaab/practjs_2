@@ -218,7 +218,8 @@ h4 {
 
 .status {
   display: block;
-  color:rgba(178, 80, 188, 0.8);
+  color:black;
+  text-align: center;
 }
 .main .file_upload {
   position: relative;
