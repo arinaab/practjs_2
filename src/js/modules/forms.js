@@ -1,6 +1,6 @@
 import {postData} from '../services/requests';
 
-const forms = () => {
+const forms = (state) => {
     const form = document.querySelectorAll('form'),
           inputs = document.querySelectorAll('input'), //для очистки инпутов
           upload = document.querySelectorAll('input[name="upload"]'); //инпуты с выбором файлов
@@ -68,6 +68,13 @@ const forms = () => {
             statusMessage.append(statusImg, textMessage);
 
             const formData = new FormData(item);
+
+            if (item.classList.contains('calc_form')) {
+                for (let key in state) {
+                    formData.append(key, state[key]);
+                }
+            }
+
             let api; //переменная для формирования пути на сервер
             item.closest('.popup-design') || item.classList.contains('calc_form') ? api = path.designer : api = path.question;
 
