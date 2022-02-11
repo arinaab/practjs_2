@@ -4391,6 +4391,7 @@ var calc = function calc(size, material, options, promocode, result, state, prop
       promocodeBlock = document.querySelector(promocode),
       resultBlock = document.querySelector(result);
   var sum = 0;
+  sum = Math.round(+sizeBlock.value * +materialBlock.value + +optionsBlock.value);
 
   var calcFunction = function calcFunction() {
     sum = Math.round(+sizeBlock.value * +materialBlock.value + +optionsBlock.value);
@@ -4408,10 +4409,21 @@ var calc = function calc(size, material, options, promocode, result, state, prop
     console.log(state);
   };
 
+  var toState = function toState(block, selectProp, eventType) {
+    block.addEventListener(eventType, function () {
+      state[selectProp] = block.value;
+      console.log(state);
+    });
+  };
+
   sizeBlock.addEventListener('change', calcFunction);
   materialBlock.addEventListener('change', calcFunction);
   optionsBlock.addEventListener('change', calcFunction);
   promocodeBlock.addEventListener('input', calcFunction);
+  toState(sizeBlock, 'size', 'change');
+  toState(materialBlock, 'material', 'change');
+  toState(optionsBlock, 'options', 'change');
+  toState(promocodeBlock, 'promocode', 'input');
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (calc);
