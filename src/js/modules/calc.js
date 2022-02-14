@@ -6,7 +6,6 @@ const calc = (size, material, options, promocode, result, state, prop, ) => {
           resultBlock = document.querySelector(result);
 
     let sum = 0;
-    sum = Math.round((+sizeBlock.value) * (+materialBlock.value) + (+optionsBlock.value));
 
     const calcFunction = () => {
         sum = Math.round((+sizeBlock.value) * (+materialBlock.value) + (+optionsBlock.value));
