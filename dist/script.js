@@ -4455,21 +4455,40 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var accordion = function accordion(headersSelector, blocksSelector) {
-  var headers = document.querySelectorAll(headersSelector),
-      blocks = document.querySelectorAll(blocksSelector);
-  blocks.forEach(function (block) {
-    block.classList.add('animate__animated', 'animate__flipInX');
-  });
-  headers.forEach(function (header) {
-    header.addEventListener('click', function () {
-      if (!this.classList.contains('active')) {
-        headers.forEach(function (btn) {
-          return btn.classList.remove('active', 'active-style');
-        });
-        this.classList.add('active', 'active-style');
+  var headers = document.querySelectorAll(headersSelector); //   blocks = document.querySelectorAll(blocksSelector);
+
+  headers.forEach(function (item) {
+    item.addEventListener('click', function () {
+      hideBlocks();
+      this.classList.toggle('active-style');
+      this.nextElementSibling.classList.toggle('active-content');
+
+      if (this.classList.contains('active-style')) {
+        this.nextElementSibling.style.maxHeight = this.nextElementSibling.scrollHeight + 80 + 'px';
+      } else {
+        this.nextElementSibling.style.maxHeight = '0px';
       }
     });
   });
+
+  var hideBlocks = function hideBlocks() {
+    headers.forEach(function (item) {
+      var nextSibl = item.nextElementSibling;
+      item.classList.remove('active-style');
+      nextSibl.classList.remove('active-content');
+    });
+  }; // blocks.forEach(block => {
+  //     block.classList.add('animate__animated', 'animate__flipInX');
+  // });
+  // headers.forEach(header => {
+  //     header.addEventListener('click', function() {
+  //         if (!this.classList.contains('active')) {
+  //             headers.forEach(btn => btn.classList.remove('active', 'active-style'));
+  //             this.classList.add('active', 'active-style');
+  //         }
+  //     });
+  // });
+
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (accordion);
