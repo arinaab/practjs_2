@@ -4412,6 +4412,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_sizes__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./modules/sizes */ "./src/js/modules/sizes.js");
 /* harmony import */ var _modules_accordion__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./modules/accordion */ "./src/js/modules/accordion.js");
 /* harmony import */ var _modules_burger__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./modules/burger */ "./src/js/modules/burger.js");
+/* harmony import */ var _modules_scrolling__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./modules/scrolling */ "./src/js/modules/scrolling.js");
+
 
 
 
@@ -4440,6 +4442,7 @@ window.addEventListener('DOMContentLoaded', function () {
   Object(_modules_sizes__WEBPACK_IMPORTED_MODULE_8__["default"])('.sizes-block');
   Object(_modules_accordion__WEBPACK_IMPORTED_MODULE_9__["default"])('.accordion-heading', '.accordion-block');
   Object(_modules_burger__WEBPACK_IMPORTED_MODULE_10__["default"])();
+  Object(_modules_scrolling__WEBPACK_IMPORTED_MODULE_11__["default"])('.pageup');
 });
 
 /***/ }),
@@ -5029,6 +5032,70 @@ var modals = function modals() {
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (modals);
+
+/***/ }),
+
+/***/ "./src/js/modules/scrolling.js":
+/*!*************************************!*\
+  !*** ./src/js/modules/scrolling.js ***!
+  \*************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+var scrolling = function scrolling(upSelector) {
+  var upElem = document.querySelector(upSelector);
+  window.addEventListener('scroll', function () {
+    if (document.documentElement.scrollTop > 1650) {
+      upElem.classList.add('animate__animated', 'animate__fadeInUp');
+      upElem.classList.remove('animate__fadeOut');
+    } else {
+      upElem.classList.remove('animate__fadeInUp');
+      upElem.classList.add('animate__fadeOut');
+    }
+  });
+  var element = document.documentElement,
+      //чтобы не прописывать каждый раз такую структуру
+  body = document.body;
+
+  var calcScroll = function calcScroll() {
+    upElem.addEventListener('click', function (e) {
+      var scrollTop = Math.round(body.scrollTop || element.scrollTop);
+
+      if (this.hash !== '') {
+        e.preventDefault(); //отменяем, т.к. у нас элемент - это ссылка
+
+        var hashElem = document.querySelector(this.hash),
+            hashElemTop = 0;
+
+        while (hashElem.offsetParent) {
+          //перебираем всех родителей элемента
+          hashElemTop += hashElem.offsetTop; //и узнаем, сколько пикселей нужно будет долистать
+
+          hashElem = hashElem.offsetParent;
+        }
+
+        hashElemTop = Math.round(hashElemTop);
+        smoothScroll(scrollTop, hashElemTop, this.hash);
+      }
+    });
+  };
+
+  var smoothScroll = function smoothScroll(from, to, hash) {
+    var timeInterval = 1,
+        prevScrollTop,
+        speed;
+
+    if (to > from) {
+      speed = 30;
+    } else {
+      speed = -30;
+    }
+  };
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (scrolling);
 
 /***/ }),
 
