@@ -5044,6 +5044,10 @@ var modals = function modals() {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__);
+
+
 var scrolling = function scrolling(upSelector) {
   var upElem = document.querySelector(upSelector);
   window.addEventListener('scroll', function () {
@@ -5054,45 +5058,77 @@ var scrolling = function scrolling(upSelector) {
       upElem.classList.remove('animate__fadeInUp');
       upElem.classList.add('animate__fadeOut');
     }
-  });
-  var element = document.documentElement,
-      //чтобы не прописывать каждый раз такую структуру
-  body = document.body;
+  }); //scrolling with RAF
 
-  var calcScroll = function calcScroll() {
-    upElem.addEventListener('click', function (e) {
-      var scrollTop = Math.round(body.scrollTop || element.scrollTop);
+  var links = document.querySelectorAll('[href^="#"]'),
+      //ищем все локальные ссылки
+  speed = 0.3;
+  links.forEach(function (link) {
+    link.addEventListener('click', function (event) {
+      event.preventDefault();
+      var widthTop = document.documentElement.scrollTop,
+          hash = this.hash,
+          toBlock = document.querySelector(hash).getBoundingClientRect().top,
+          start = null;
+      requestAnimationFrame(step);
 
-      if (this.hash !== '') {
-        e.preventDefault(); //отменяем, т.к. у нас элемент - это ссылка
-
-        var hashElem = document.querySelector(this.hash),
-            hashElemTop = 0;
-
-        while (hashElem.offsetParent) {
-          //перебираем всех родителей элемента
-          hashElemTop += hashElem.offsetTop; //и узнаем, сколько пикселей нужно будет долистать
-
-          hashElem = hashElem.offsetParent;
+      function step(time) {
+        if (start === null) {
+          start = time;
         }
 
-        hashElemTop = Math.round(hashElemTop);
-        smoothScroll(scrollTop, hashElemTop, this.hash);
+        var progress = time - start,
+            r = toBlock < 0 ? Math.max(widthTop - progress / speed, widthTop + toBlock) : Math.min(widthTop + progress / speed, widthTop + toBlock);
+        document.documentElement.scrollTo(0, r);
+
+        if (r != widthTop + toBlock) {
+          requestAnimationFrame(step);
+        } else {
+          location.hash = hash;
+        }
       }
     });
-  };
-
-  var smoothScroll = function smoothScroll(from, to, hash) {
-    var timeInterval = 1,
-        prevScrollTop,
-        speed;
-
-    if (to > from) {
-      speed = 30;
-    } else {
-      speed = -30;
-    }
-  };
+  }); //pure JS scrolling
+  // const element = document.documentElement, //чтобы не прописывать каждый раз такую структуру
+  //       body = document.body;
+  // const calcScroll = () => {
+  //     upElem.addEventListener('click', function(e) {
+  //         let scrollTop = Math.round(body.scrollTop || element.scrollTop);
+  //         if (this.hash !== '') {
+  //             e.preventDefault(); //отменяем, т.к. у нас элемент - это ссылка
+  //             let hashElem = document.querySelector(this.hash),
+  //                 hashElemTop = 0;
+  //             while (hashElem.offsetParent) { //перебираем всех родителей элемента
+  //                 hashElemTop += hashElem.offsetTop; //и узнаем, сколько пикселей нужно будет долистать
+  //                 hashElem = hashElem.offsetParent;
+  //             }
+  //             hashElemTop = Math.round(hashElemTop);
+  //             smoothScroll(scrollTop, hashElemTop, this.hash);
+  //         }
+  //     });
+  // };
+  // const smoothScroll = (from, to, hash) => {
+  //     let timeInterval = 1,
+  //         prevScrollTop,
+  //         speed;
+  //     if (to > from) {
+  //         speed = 30;
+  //     } else {
+  //         speed = -30;
+  //     }
+  //     let move = setInterval(function() { //функция с анимацией
+  //         let scrollTop = Math.round(body.scrollTop || element.scrollTop);
+  //         if (prevScrollTop === scrollTop || (to > from && scrollTop >= to) || to < from && scrollTop <= to) {
+  //             clearInterval(move);
+  //             history.replaceState(history.state, document.title, location.href.replace(/#.*$/g, '') + hash);
+  //         } else {
+  //             body.scrollTop += speed;
+  //             element.scrollTop += speed;
+  //             prevScrollTop = scrollTop;
+  //         }
+  //     }, timeInterval);
+  // };
+  // calcScroll();
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (scrolling);
