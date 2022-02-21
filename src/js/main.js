@@ -10,6 +10,7 @@ import sizes from './modules/sizes';
 import accordion from './modules/accordion';
 import burger from './modules/burger';
 import scrolling from './modules/scrolling';
+import drop from './modules/drop';
 
 window.addEventListener('DOMContentLoaded', () => {
     'use strict';
@@ -30,4 +31,5 @@ window.addEventListener('DOMContentLoaded', () => {
     accordion('.accordion-heading', '.accordion-block');
     burger();
     scrolling('.pageup');
+    drop();
 });
